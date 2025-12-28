@@ -136,57 +136,66 @@
       <button type="button" id="shake-btn">Shake</button>
     </main>
 
-    <script>
-      const answers = [
-        "It is certain.",
-        "Without a doubt.",
-        "You may rely on it.",
-        "Yes, definitely.",
-        "Signs point to yes.",
-        "Most likely.",
-        "Outlook good.",
-        "Reply hazy, try again.",
-        "Ask again later.",
-        "Better not tell you now.",
-        "Cannot predict now.",
-        "Concentrate and ask again.",
-        "Don't count on it.",
-        "My reply is no.",
-        "My sources say no.",
-        "Very doubtful.",
-      ];
+<script>
+  const answers = [
+    "It is certain.",
+    "Without a doubt.",
+    "You may rely on it.",
+    "Yes, definitely.",
+    "Signs point to yes.",
+    "Most likely.",
+    "Outlook good.",
+    "Reply hazy, try again.",
+    "Ask again later.",
+    "Better not tell you now.",
+    "Cannot predict now.",
+    "Concentrate and ask again.",
+    "Don't count on it.",
+    "My reply is no.",
+    "My sources say no.",
+    "Very doubtful.",
+    "DOOM.",
+  ];
 
-      const ball = document.getElementById("ball");
-      const answerEl = document.getElementById("answer");
-      const button = document.getElementById("shake-btn");
+  const ball = document.getElementById("ball");
+  const answerEl = document.getElementById("answer");
+  const button = document.getElementById("shake-btn");
 
-      function getRandomAnswer() {
-        const index = Math.floor(Math.random() * answers.length);
-        return answers[index];
-      }
+  // Use your DOOM file here 👇
+  const shakeSound = new Audio("trimmeddoom.mov");
+  shakeSound.volume = 0.8; // adjust if too loud/quiet
 
-      function shakeBall() {
-        // Prevent spamming animation
-        if (ball.classList.contains("shake")) return;
+  function getRandomAnswer() {
+    const index = Math.floor(Math.random() * answers.length);
+    return answers[index];
+  }
 
-        ball.classList.add("shake");
-        answerEl.textContent = "Thinking...";
+  function shakeBall() {
+    if (ball.classList.contains("shake")) return;
 
-        setTimeout(() => {
-          answerEl.textContent = getRandomAnswer();
-          ball.classList.remove("shake");
-        }, 600);
-      }
+    // Play the sound from the beginning each time
+    shakeSound.currentTime = 0;
+    shakeSound.play().catch(() => {
+      // ignore browser autoplay errors
+    });
 
-      button.addEventListener("click", shakeBall);
+    ball.classList.add("shake");
+    answerEl.textContent = "Thinking...";
 
-      // Optional: press Enter/Space when button is focused
-      button.addEventListener("keydown", (event) => {
-        if (event.key === "Enter" || event.key === " ") {
-          event.preventDefault();
-          shakeBall();
-        }
-      });
-    </script>
+    setTimeout(() => {
+      answerEl.textContent = getRandomAnswer();
+      ball.classList.remove("shake");
+    }, 600);
+  }
+
+  button.addEventListener("click", shakeBall);
+
+  button.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      shakeBall();
+    }
+  });
+</script>
   </body>
 </html>
